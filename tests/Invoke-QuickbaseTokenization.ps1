@@ -110,8 +110,8 @@ function Get-DeclarationTokens {
         }
 
         foreach ($captureInfo in @(
-            @{ Group = 1; Scope = 'keyword.declaration.quickbase' },
-            @{ Group = 2; Scope = 'storage.type.quickbase' },
+            @{ Group = 1; Scope = 'keyword.control.declaration.quickbase' },
+            @{ Group = 2; Scope = 'entity.name.type.quickbase' },
             @{ Group = 3; Scope = 'variable.other.quickbase' }
         )) {
             $group = $match.Groups[$captureInfo.Group]
@@ -252,7 +252,7 @@ function Get-QuerySnapshots {
         $specialRanges = @((@($specialQuotedTokens) + @($specialBareTokens)) | ForEach-Object { New-Range -Start $_.Start -End $_.End })
 
         $tokens = @()
-        $tokens += New-Token -Start $queryStart -End ($queryStart + 1) -Text '{' -Scope 'punctuation.section.block.begin.quickbase.query'
+        $tokens += New-Token -Start $queryStart -End ($queryStart + 1) -Text '{' -Scope 'keyword.control.block.quickbase.query'
         $tokens += $fieldTokens
         $tokens += Get-RegexTokens -Text $queryText -Pattern $operatorPattern -Scope 'keyword.operator.comparison.quickbase.query' -Offset $queryStart
         $tokens += Get-RegexTokens -Text $queryText -Pattern $placeholderPattern -Scope 'variable.other.quickbase.query' -Offset $queryStart
@@ -282,7 +282,7 @@ function Get-QuerySnapshots {
         }
 
         $tokens += Get-RegexTokens -Text $queryText -Pattern $dotPattern -Scope 'punctuation.separator.dot.quickbase.query' -Offset $queryStart
-        $tokens += New-Token -Start ($queryEnd - 1) -End $queryEnd -Text '}' -Scope 'punctuation.section.block.end.quickbase.query'
+        $tokens += New-Token -Start ($queryEnd - 1) -End $queryEnd -Text '}' -Scope 'keyword.control.block.quickbase.query'
 
         $orderedTokens = @(
             $tokens |

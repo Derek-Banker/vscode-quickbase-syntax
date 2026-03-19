@@ -41,13 +41,13 @@
 					"begin": "\\{(?=\\s*(?:'[^']+'|\\d+)\\s*\\.)",
 					"beginCaptures": {
 						"0": {
-							"name": "punctuation.section.block.begin.quickbase.query"
+							"name": "keyword.control.block.quickbase.query"
 						}
 					},
 					"end": "\\}",
 					"endCaptures": {
 						"0": {
-							"name": "punctuation.section.block.end.quickbase.query"
+							"name": "keyword.control.block.quickbase.query"
 						}
 					},
 					"patterns": [
@@ -114,6 +114,10 @@
 				{
 					"name": "variable.other.quickbase.query",
 					"match": "\\{\\{[^{}]+\\}\\}"
+				},
+				{
+					"name": "keyword.control.quickbase.query",
+					"match": "\\b(?i:and|or)\\b"
 				}
 			]
 		},
@@ -152,11 +156,11 @@
 		"storage": {
 			"patterns": [
 				{
-					"name": "keyword.declaration.quickbase",
+					"name": "keyword.control.declaration.quickbase",
 					"match": "\\b(?i:var)\\b"
 				},
 				{
-					"name": "storage.type.quickbase",
+					"name": "entity.name.type.quickbase",
 					"match": "\\b(?i:bool|number|text|textlist|date|datetime|duration|timeofday|workdate|user|recordlist)\\b"
 				}
 			]
@@ -179,10 +183,10 @@
 					"match": "\\b((?i:var))\\s+((?i:bool|number|text|textlist|date|datetime|duration|timeofday|workdate|user|recordlist))\\s+([A-Za-z][A-Za-z0-9_]*)\\b",
 					"captures": {
 						"1": {
-							"name": "keyword.declaration.quickbase"
+							"name": "keyword.control.declaration.quickbase"
 						},
 						"2": {
-							"name": "storage.type.quickbase"
+							"name": "entity.name.type.quickbase"
 						},
 						"3": {
 							"name": "variable.other.quickbase"

@@ -22,13 +22,13 @@
                              "start":  0,
                              "end":  3,
                              "text":  "var",
-                             "scope":  "keyword.declaration.quickbase"
+                             "scope":  "keyword.control.declaration.quickbase"
                          },
                          {
                              "start":  4,
                              "end":  14,
                              "text":  "RecordList",
-                             "scope":  "storage.type.quickbase"
+                             "scope":  "entity.name.type.quickbase"
                          },
                          {
                              "start":  15,
@@ -71,7 +71,7 @@
                                                "start":  42,
                                                "end":  43,
                                                "text":  "{",
-                                               "scope":  "punctuation.section.block.begin.quickbase.query"
+                                               "scope":  "keyword.control.block.quickbase.query"
                                            },
                                            {
                                                "start":  43,
@@ -107,7 +107,7 @@
                                                "start":  63,
                                                "end":  64,
                                                "text":  "}",
-                                               "scope":  "punctuation.section.block.end.quickbase.query"
+                                               "scope":  "keyword.control.block.quickbase.query"
                                            }
                                        ]
                         }
@@ -121,13 +121,13 @@
                              "start":  0,
                              "end":  3,
                              "text":  "var",
-                             "scope":  "keyword.declaration.quickbase"
+                             "scope":  "keyword.control.declaration.quickbase"
                          },
                          {
                              "start":  4,
                              "end":  12,
                              "text":  "TextList",
-                             "scope":  "storage.type.quickbase"
+                             "scope":  "entity.name.type.quickbase"
                          },
                          {
                              "start":  13,

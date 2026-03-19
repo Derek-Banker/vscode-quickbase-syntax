@@ -16,6 +16,12 @@ Describe 'Quickbase diagnostics' {
         ($output -join "`n") | Should Be 'OK'
     }
 
+    It 'accepts a standalone Quickbase query expression without diagnostics' {
+        $output = Invoke-QuickbaseDiagnostics -FixtureName 'diagnostics-standalone-query.quickbase'
+
+        ($output -join "`n") | Should Be 'OK'
+    }
+
     It 'flags semantic and type issues' {
         $output = Invoke-QuickbaseDiagnostics -FixtureName 'diagnostics-semantic-errors.quickbase'
         $joined = $output -join "`n"

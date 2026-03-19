@@ -7,13 +7,13 @@
                              "start":  0,
                              "end":  3,
                              "text":  "var",
-                             "scope":  "keyword.declaration.quickbase"
+                             "scope":  "keyword.control.declaration.quickbase"
                          },
                          {
                              "start":  4,
                              "end":  8,
                              "text":  "Text",
-                             "scope":  "storage.type.quickbase"
+                             "scope":  "entity.name.type.quickbase"
                          },
                          {
                              "start":  9,
@@ -44,7 +44,7 @@
                                                "start":  18,
                                                "end":  19,
                                                "text":  "{",
-                                               "scope":  "punctuation.section.block.begin.quickbase.query"
+                                               "scope":  "keyword.control.block.quickbase.query"
                                            },
                                            {
                                                "start":  19,
@@ -80,7 +80,7 @@
                                                "start":  29,
                                                "end":  30,
                                                "text":  "}",
-                                               "scope":  "punctuation.section.block.end.quickbase.query"
+                                               "scope":  "keyword.control.block.quickbase.query"
                                            }
                                        ]
                         }
@@ -94,13 +94,13 @@
                              "start":  0,
                              "end":  3,
                              "text":  "var",
-                             "scope":  "keyword.declaration.quickbase"
+                             "scope":  "keyword.control.declaration.quickbase"
                          },
                          {
                              "start":  4,
                              "end":  14,
                              "text":  "RecordList",
-                             "scope":  "storage.type.quickbase"
+                             "scope":  "entity.name.type.quickbase"
                          },
                          {
                              "start":  15,
@@ -145,13 +145,13 @@
                              "start":  0,
                              "end":  3,
                              "text":  "var",
-                             "scope":  "keyword.declaration.quickbase"
+                             "scope":  "keyword.control.declaration.quickbase"
                          },
                          {
                              "start":  4,
                              "end":  8,
                              "text":  "Bool",
-                             "scope":  "storage.type.quickbase"
+                             "scope":  "entity.name.type.quickbase"
                          },
                          {
                              "start":  9,
@@ -235,13 +235,13 @@
                              "start":  0,
                              "end":  3,
                              "text":  "var",
-                             "scope":  "keyword.declaration.quickbase"
+                             "scope":  "keyword.control.declaration.quickbase"
                          },
                          {
                              "start":  4,
                              "end":  8,
                              "text":  "Text",
-                             "scope":  "storage.type.quickbase"
+                             "scope":  "entity.name.type.quickbase"
                          },
                          {
                              "start":  9,
@@ -272,7 +272,7 @@
                                                "start":  23,
                                                "end":  24,
                                                "text":  "{",
-                                               "scope":  "punctuation.section.block.begin.quickbase.query"
+                                               "scope":  "keyword.control.block.quickbase.query"
                                            },
                                            {
                                                "start":  24,
@@ -308,7 +308,7 @@
                                                "start":  39,
                                                "end":  40,
                                                "text":  "}",
-                                               "scope":  "punctuation.section.block.end.quickbase.query"
+                                               "scope":  "keyword.control.block.quickbase.query"
                                            }
                                        ]
                         }
@@ -322,13 +322,13 @@
                              "start":  0,
                              "end":  3,
                              "text":  "var",
-                             "scope":  "keyword.declaration.quickbase"
+                             "scope":  "keyword.control.declaration.quickbase"
                          },
                          {
                              "start":  4,
                              "end":  8,
                              "text":  "Text",
-                             "scope":  "storage.type.quickbase"
+                             "scope":  "entity.name.type.quickbase"
                          },
                          {
                              "start":  9,
@@ -359,7 +359,7 @@
                                                "start":  24,
                                                "end":  25,
                                                "text":  "{",
-                                               "scope":  "punctuation.section.block.begin.quickbase.query"
+                                               "scope":  "keyword.control.block.quickbase.query"
                                            },
                                            {
                                                "start":  25,
@@ -395,7 +395,7 @@
                                                "start":  46,
                                                "end":  47,
                                                "text":  "}",
-                                               "scope":  "punctuation.section.block.end.quickbase.query"
+                                               "scope":  "keyword.control.block.quickbase.query"
                                            }
                                        ]
                         }
@@ -409,13 +409,13 @@
                              "start":  0,
                              "end":  3,
                              "text":  "var",
-                             "scope":  "keyword.declaration.quickbase"
+                             "scope":  "keyword.control.declaration.quickbase"
                          },
                          {
                              "start":  4,
                              "end":  8,
                              "text":  "Text",
-                             "scope":  "storage.type.quickbase"
+                             "scope":  "entity.name.type.quickbase"
                          },
                          {
                              "start":  9,
@@ -446,7 +446,7 @@
                                                "start":  23,
                                                "end":  24,
                                                "text":  "{",
-                                               "scope":  "punctuation.section.block.begin.quickbase.query"
+                                               "scope":  "keyword.control.block.quickbase.query"
                                            },
                                            {
                                                "start":  24,
@@ -482,7 +482,7 @@
                                                "start":  43,
                                                "end":  44,
                                                "text":  "}",
-                                               "scope":  "punctuation.section.block.end.quickbase.query"
+                                               "scope":  "keyword.control.block.quickbase.query"
                                            }
                                        ]
                         }

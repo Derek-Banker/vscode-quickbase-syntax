@@ -13,6 +13,12 @@ Describe 'Quickbase grammar' {
         $fieldIdPattern = $queryBlockPattern.patterns[0]
         $specialQuotedValuePattern = $queryBlockPattern.patterns[3]
         $specialBareValuePattern = $queryBlockPattern.patterns[4]
+        $queryJoinerPattern = $grammar.repository.apiQuery.patterns[3]
+
+        It 'uses a visible block scope for query braces' {
+            $queryBlockPattern.beginCaptures.'0'.name | Should Be 'keyword.control.block.quickbase.query'
+            $queryBlockPattern.endCaptures.'0'.name | Should Be 'keyword.control.block.quickbase.query'
+        }
 
         It 'uses a variable scope for quoted or bare field IDs' {
             $fieldIdPattern.name | Should Be 'variable.other.quickbase.query'
@@ -51,6 +57,15 @@ Describe 'Quickbase grammar' {
             $match.Success | Should Be $true
             $match.Value | Should Be 'today'
         }
+
+        It 'matches logical joiners between query blocks' {
+            $sample = "{'26'.EX.'1'}AND{'11'.EX.'1'}"
+            $match = [regex]::Match($sample, $queryJoinerPattern.match)
+
+            $queryJoinerPattern.name | Should Be 'keyword.control.quickbase.query'
+            $match.Success | Should Be $true
+            $match.Value | Should Be 'AND'
+        }
     }
 
     Context 'variable declarations' {
@@ -59,8 +74,8 @@ Describe 'Quickbase grammar' {
         $variableDeclarationPattern = $grammar.repository.variable.patterns[1]
 
         It 'gives var a dedicated keyword scope' {
-            $varKeywordPattern.name | Should Be 'keyword.declaration.quickbase'
-            $variableDeclarationPattern.captures.'1'.name | Should Be 'keyword.declaration.quickbase'
+            $varKeywordPattern.name | Should Be 'keyword.control.declaration.quickbase'
+            $variableDeclarationPattern.captures.'1'.name | Should Be 'keyword.control.declaration.quickbase'
         }
 
         It 'captures var, the declared type, and the variable name separately' {
@@ -73,8 +88,8 @@ Describe 'Quickbase grammar' {
             $match.Groups[3].Value | Should Be 'queryCERS'
         }
 
-        It 'keeps the datatype and variable name on their own scopes' {
-            $variableDeclarationPattern.captures.'2'.name | Should Be 'storage.type.quickbase'
+        It 'uses a type-oriented scope for the declared datatype' {
+            $variableDeclarationPattern.captures.'2'.name | Should Be 'entity.name.type.quickbase'
             $variableDeclarationPattern.captures.'3'.name | Should Be 'variable.other.quickbase'
         }
 
