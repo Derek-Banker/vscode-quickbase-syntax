@@ -1,20 +1,21 @@
 # Quickbase Formula & Query Tools
 
-Highlights and validates Quickbase formulas, formula-query functions, and API query strings.
+VS Code language support for Quickbase formulas and query expressions. This extension adds syntax highlighting, snippets, hover documentation, and live validation for `.quickbase` files so formula work is easier to read, write, and review.
 
 ![screenshot](https://raw.githubusercontent.com/jdklub/vscode-quickbase-formula/master/images/screenshot.png)
 
 ## Requirements
 
-Files must have a .quickbase extension
+Use the `.quickbase` file extension for Quickbase formulas, formula-query expressions, and standalone query text.
 
-## What's Included
+## Features
 
-- Formula function highlighting for the legacy built-ins plus newer Quickbase additions like `GetRecords()`, `GetFieldValues()`, `Size()`, `SumValues()`, `Join()`, `Median()`, regex functions, `SHA256()`, and `ToUnixTime()`
-- Query-string highlighting for Quickbase API and formula-query expressions such as `"{'6'.EX.'1'}OR{'7'.GT.'5'}"`, including bare values like `today` and `_curuser_`
-- Support for newer formula variable types like `TextList` and `RecordList`
-- Updated operator coverage for common Quickbase formula syntax such as `=`, `!=`, `<>`, and `&`
-- Live diagnostics for duplicate variables, invalid variable names, malformed query strings, regex-pattern literal rules, structural formula errors, and baseline function/type mismatches
+- Syntax highlighting for Quickbase formulas, comments, operators, variables, variable declarations, bracketed field and table references, and modern Quickbase functions
+- Query-aware highlighting for API query strings and formula-query expressions, including operators like `EX`, `GT`, `TV`, `WC`, logical joiners like `AND` and `OR`, and special values such as `'today'` and `'_curuser_'`
+- Snippets for Quickbase functions, variables, and common authoring patterns
+- Live diagnostics for structural formula errors, malformed query expressions, duplicate variables, invalid variable names, unknown variable types, unknown functions, regex-pattern issues, and baseline argument/type mismatches
+- Hover documentation for formula-query functions, query operators, variable declarations, variable types, bracketed references, and special query values
+- Grammar, hover, and validation regression coverage through PowerShell/Pester tests and committed tokenization snapshots
 
 ## Examples
 
@@ -26,36 +27,37 @@ Join($owners, "; ")
 ```
 
 ```quickbase
-"{'6'.EX.'1'}OR{'7'.GT.'5'}"
+var Text todayQuery = "{'13'.EX.'today'}AND{'20'.TV.'_curuser_'}";
 ```
 
-## Known Issues
+## Current Scope
 
-Automated grammar regression tests cover key query and variable patterns, sample-based grammar snapshots cover representative `.quickbase` files, and executable diagnostics fixtures cover the new validator behavior. Field-level type inference and exhaustive Quickbase function semantics are still intentionally conservative.
+The extension is intentionally lightweight and editor-focused. It does not execute formulas or connect to Quickbase metadata, so field-level inference and exhaustive function semantics are still conservative.
 
 ## Development
 
-Curated Quickbase formula and query documentation notes for validator work live in `docs/quickbase-documentation-notes.md`.
+Reference notes gathered from current Quickbase documentation live in `docs/quickbase-documentation-notes.md`.
 
-Hover documentation is available for formula-query functions, query operators, variable declarations, and bracketed references.
-
-Run the full grammar test suite from PowerShell:
+Run the full test suite from PowerShell:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -Command "Invoke-Pester .\tests"
 ```
 
-Refresh the committed grammar snapshots after an intentional grammar change:
+Refresh committed tokenization snapshots after an intentional grammar change:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\tests\Invoke-QuickbaseTokenization.ps1 update
 ```
 
-## Release Notes
+## Attribution
 
-### 0.1.0
+This project builds on the original `vscode-quickbase-formula` extension and its contributors.
 
-Refreshes the grammar for newer Quickbase formulas and adds API query-string highlighting.
+- Justin Klubnik created the original extension, published the initial Quickbase syntax support, and remains the named copyright holder in `LICENSE.txt`
+- Chris Pliakas contributed later grammar, snippet, scope, and branding updates that expanded the extension's Quickbase coverage
+- Derek Banker led the current modernization work, including updated formula and query support, diagnostics, hover documentation, and automated regression testing
 
+## License
 
-
+MIT-style license. See `LICENSE.txt`.
