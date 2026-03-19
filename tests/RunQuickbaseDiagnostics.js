@@ -13,10 +13,11 @@ function include(relativePath) {
 }
 
 try {
+    include('..\\lib\\quickbase-reference.js');
     include('..\\lib\\quickbase-language-service.js');
 
     var snippets = eval('(' + readText(fso.BuildPath(scriptDirectory, '..\\snippets\\snippets.json')) + ')');
-    var catalog = QuickbaseLanguageService.buildFunctionCatalog(snippets);
+    var catalog = QuickbaseLanguageService.buildFunctionCatalog(snippets, QuickbaseReference);
     var targetPath = fso.GetAbsolutePathName(WScript.Arguments.Item(0));
     var source = readText(targetPath);
     var validation = QuickbaseLanguageService.validateText(source, catalog);

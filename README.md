@@ -14,7 +14,7 @@ Files must have a .quickbase extension
 - Query-string highlighting for Quickbase API and formula-query expressions such as `"{'6'.EX.'1'}OR{'7'.GT.'5'}"`
 - Support for newer formula variable types like `TextList` and `RecordList`
 - Updated operator coverage for common Quickbase formula syntax such as `=`, `!=`, `<>`, and `&`
-- Live diagnostics for duplicate variables, unknown variables, malformed query strings, structural formula errors, and baseline function/type mismatches
+- Live diagnostics for duplicate variables, invalid variable names, malformed query strings, regex-pattern literal rules, structural formula errors, and baseline function/type mismatches
 
 ## Examples
 
@@ -35,6 +35,10 @@ Automated grammar regression tests cover key query and variable patterns, sample
 
 ## Development
 
+Curated Quickbase formula and query documentation notes for validator work live in `docs/quickbase-documentation-notes.md`.
+
+Hover documentation is available for formula-query functions, query operators, variable declarations, and bracketed references.
+
 Run the full grammar test suite from PowerShell:
 
 ```powershell
@@ -52,3 +56,5 @@ powershell -ExecutionPolicy Bypass -File .\tests\Invoke-QuickbaseTokenization.ps
 ### 0.1.0
 
 Refreshes the grammar for newer Quickbase formulas and adds API query-string highlighting.
+
+

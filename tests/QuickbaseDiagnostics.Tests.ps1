@@ -26,6 +26,9 @@ Describe 'Quickbase diagnostics' {
         $joined | Should Match 'QB107\|error\|3:24\|Invalid Quickbase query operator "BAD"\.'
         $joined | Should Match 'QB100\|error\|4:12\|Duplicate variable declaration \$query\.'
         $joined | Should Match 'QB101\|error\|5:22\|Unknown variable \$missingOwner\.'
+        $joined | Should Match 'QB109\|error\|6:10\|Quickbase variable names must use letters only\.'
+        $joined | Should Match 'QB110\|error\|6:23\|Quickbase query operators must be uppercase\.'
+        $joined | Should Match 'QB111\|warning\|8:43\|Regex pattern arguments must be string literals in Quickbase formulas\.'
     }
 
     It 'flags structural validation issues' {

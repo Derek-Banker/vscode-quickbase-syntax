@@ -1,0 +1,4 @@
+var Text query = "{6.EX.'1'}";
+var RecordList recs = GetRecords($query, [_DBID_PROJECTS]);
+var Bool hasMatch = RegexMatch("ABC", "[A-Z]+");
+Join(GetFieldValues($recs, 8), "; ")

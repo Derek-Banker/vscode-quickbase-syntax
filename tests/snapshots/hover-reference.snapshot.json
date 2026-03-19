@@ -1,0 +1,182 @@
+[
+    {
+        "line":  1,
+        "text":  "var Text query = \"{6.EX.\u00271\u0027}\";",
+        "topLevel":  [
+                         {
+                             "start":  0,
+                             "end":  3,
+                             "text":  "var",
+                             "scope":  "storage.type.var.quickbase"
+                         },
+                         {
+                             "start":  4,
+                             "end":  8,
+                             "text":  "Text",
+                             "scope":  "storage.modifier.quickbase"
+                         },
+                         {
+                             "start":  9,
+                             "end":  14,
+                             "text":  "query",
+                             "scope":  "variable.other.quickbase"
+                         },
+                         {
+                             "start":  15,
+                             "end":  16,
+                             "text":  "=",
+                             "scope":  "keyword.operator.quickbase"
+                         },
+                         {
+                             "start":  17,
+                             "end":  29,
+                             "text":  "\"{6.EX.\u00271\u0027}\"",
+                             "scope":  "string.quoted.double.quickbase"
+                         }
+                     ],
+        "queries":  [
+
+                    ]
+    },
+    {
+        "line":  2,
+        "text":  "var RecordList recs = GetRecords($query, [_DBID_PROJECTS]);",
+        "topLevel":  [
+                         {
+                             "start":  0,
+                             "end":  3,
+                             "text":  "var",
+                             "scope":  "storage.type.var.quickbase"
+                         },
+                         {
+                             "start":  4,
+                             "end":  14,
+                             "text":  "RecordList",
+                             "scope":  "storage.modifier.quickbase"
+                         },
+                         {
+                             "start":  15,
+                             "end":  19,
+                             "text":  "recs",
+                             "scope":  "variable.other.quickbase"
+                         },
+                         {
+                             "start":  20,
+                             "end":  21,
+                             "text":  "=",
+                             "scope":  "keyword.operator.quickbase"
+                         },
+                         {
+                             "start":  22,
+                             "end":  32,
+                             "text":  "GetRecords",
+                             "scope":  "support.function.quickbase"
+                         },
+                         {
+                             "start":  33,
+                             "end":  39,
+                             "text":  "$query",
+                             "scope":  "variable.other.quickbase"
+                         },
+                         {
+                             "start":  41,
+                             "end":  57,
+                             "text":  "[_DBID_PROJECTS]",
+                             "scope":  "variable.other.quickbase"
+                         }
+                     ],
+        "queries":  [
+
+                    ]
+    },
+    {
+        "line":  3,
+        "text":  "var Bool hasMatch = RegexMatch(\"ABC\", \"[A-Z]+\");",
+        "topLevel":  [
+                         {
+                             "start":  0,
+                             "end":  3,
+                             "text":  "var",
+                             "scope":  "storage.type.var.quickbase"
+                         },
+                         {
+                             "start":  4,
+                             "end":  8,
+                             "text":  "Bool",
+                             "scope":  "storage.modifier.quickbase"
+                         },
+                         {
+                             "start":  9,
+                             "end":  17,
+                             "text":  "hasMatch",
+                             "scope":  "variable.other.quickbase"
+                         },
+                         {
+                             "start":  18,
+                             "end":  19,
+                             "text":  "=",
+                             "scope":  "keyword.operator.quickbase"
+                         },
+                         {
+                             "start":  20,
+                             "end":  30,
+                             "text":  "RegexMatch",
+                             "scope":  "support.function.quickbase"
+                         },
+                         {
+                             "start":  31,
+                             "end":  36,
+                             "text":  "\"ABC\"",
+                             "scope":  "string.quoted.double.quickbase"
+                         },
+                         {
+                             "start":  38,
+                             "end":  46,
+                             "text":  "\"[A-Z]+\"",
+                             "scope":  "string.quoted.double.quickbase"
+                         }
+                     ],
+        "queries":  [
+
+                    ]
+    },
+    {
+        "line":  4,
+        "text":  "Join(GetFieldValues($recs, 8), \"; \")",
+        "topLevel":  [
+                         {
+                             "start":  0,
+                             "end":  4,
+                             "text":  "Join",
+                             "scope":  "support.function.quickbase"
+                         },
+                         {
+                             "start":  5,
+                             "end":  19,
+                             "text":  "GetFieldValues",
+                             "scope":  "support.function.quickbase"
+                         },
+                         {
+                             "start":  20,
+                             "end":  25,
+                             "text":  "$recs",
+                             "scope":  "variable.other.quickbase"
+                         },
+                         {
+                             "start":  27,
+                             "end":  28,
+                             "text":  "8",
+                             "scope":  "constant.numeric.quickbase"
+                         },
+                         {
+                             "start":  31,
+                             "end":  35,
+                             "text":  "\"; \"",
+                             "scope":  "string.quoted.double.quickbase"
+                         }
+                     ],
+        "queries":  [
+
+                    ]
+    }
+]

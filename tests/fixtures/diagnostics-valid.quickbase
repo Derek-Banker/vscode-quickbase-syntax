@@ -1,4 +1,6 @@
-var RecordList openProjects = GetRecords("{'6'.EX.'In Progress'}", [_DBID_PROJECTS]);
+var Text statusQuery = "{'6'.EX.'In Progress'}";
+var RecordList openProjects = GetRecords($statusQuery, [_DBID_PROJECTS]);
+var RecordList ownerProjects = GetRecords("{6.EX.'" & [Manager] & "'}", [_DBID_PROJECTS]);
 var TextList owners = GetFieldValues($openProjects, 8);
 var Text ownerSummary = Join($owners, "; ");
 var Number ownerCount = Size($owners);

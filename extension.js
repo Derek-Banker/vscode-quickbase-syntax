@@ -1,9 +1,11 @@
 var vscode = require('vscode');
+var quickbaseHoverService = require('./lib/quickbase-hover-service');
 var quickbaseLanguageService = require('./lib/quickbase-language-service');
+var quickbaseReference = require('./lib/quickbase-reference');
 var snippets = require('./snippets/snippets.json');
 
 function activate(context) {
-    var functionCatalog = quickbaseLanguageService.buildFunctionCatalog(snippets);
+    var functionCatalog = quickbaseLanguageService.buildFunctionCatalog(snippets, quickbaseReference);
     var diagnostics = vscode.languages.createDiagnosticCollection('quickbase');
     var timers = Object.create(null);
 
@@ -22,6 +24,48 @@ function activate(context) {
             return vscode.DiagnosticSeverity.Hint;
         }
         return vscode.DiagnosticSeverity.Warning;
+    }
+
+    function createHover(document, position) {
+        var hoverData;
+        var range;
+        var contents = [];
+        var markdown;
+
+        if (!isQuickbaseDocument(document)) {
+            return null;
+        }
+
+        hoverData = quickbaseHoverService.getHoverData(document.getText(), document.offsetAt(position), functionCatalog, quickbaseReference);
+        if (!hoverData) {
+            return null;
+        }
+
+        range = new vscode.Range(document.positionAt(hoverData.start), document.positionAt(hoverData.end));
+
+        markdown = new vscode.MarkdownString();
+        if (hoverData.signatures && hoverData.signatures.length) {
+            markdown.appendCodeblock(hoverData.signatures.join('\n'), 'quickbase');
+        } else {
+            markdown.appendCodeblock(hoverData.label, 'quickbase');
+        }
+        contents.push(markdown);
+
+        if (hoverData.summary) {
+            contents.push(new vscode.MarkdownString(hoverData.summary));
+        }
+
+        if (hoverData.notes && hoverData.notes.length) {
+            contents.push(new vscode.MarkdownString('- ' + hoverData.notes.join('\n- ')));
+        }
+
+        if (hoverData.docsUrl) {
+            markdown = new vscode.MarkdownString('[Quickbase docs](' + hoverData.docsUrl + ')');
+            markdown.isTrusted = true;
+            contents.push(markdown);
+        }
+
+        return new vscode.Hover(contents, range);
     }
 
     function validateDocument(document) {
@@ -70,6 +114,9 @@ function activate(context) {
     }
 
     context.subscriptions.push(diagnostics);
+    context.subscriptions.push(vscode.languages.registerHoverProvider('quickbase', {
+        provideHover: createHover
+    }));
     context.subscriptions.push(vscode.workspace.onDidOpenTextDocument(validateDocument));
     context.subscriptions.push(vscode.workspace.onDidChangeTextDocument(function (event) {
         scheduleValidation(event.document);
