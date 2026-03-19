@@ -30,7 +30,21 @@ Join($owners, "; ")
 
 ## Known Issues
 
-No automated VS Code grammar tests are included yet.
+Automated grammar regression tests cover key query and variable patterns, and sample-based grammar snapshots cover representative `.quickbase` files. Full extension-host integration tests and diagnostics are still not included yet.
+
+## Development
+
+Run the full grammar test suite from PowerShell:
+
+```powershell
+powershell -ExecutionPolicy Bypass -Command "Invoke-Pester .\tests"
+```
+
+Refresh the committed grammar snapshots after an intentional grammar change:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\tests\Invoke-QuickbaseTokenization.ps1 update
+```
 
 ## Release Notes
 
