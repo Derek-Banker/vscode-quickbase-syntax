@@ -2,10 +2,17 @@ Set-StrictMode -Version Latest
 
 $grammarPath = Join-Path $PSScriptRoot '..\syntaxes\quickbase.tmLanguage.json'
 $grammar = Get-Content $grammarPath -Raw | ConvertFrom-Json
+$languageConfigurationPath = Join-Path $PSScriptRoot '..\language-configuration.json'
+$languageConfigurationText = Get-Content $languageConfigurationPath -Raw
 
 Describe 'Quickbase grammar' {
     It 'loads the TextMate grammar JSON' {
         $grammar.scopeName | Should Be 'source.quickbase'
+    }
+
+    It 'does not treat square-bracket references as editor bracket pairs' {
+        $languageConfigurationText | Should Not Match '"brackets"\s*:\s*\[[^\]]*\["\["\s*,\s*"\]"\]'
+        $languageConfigurationText | Should Match '"colorizedBracketPairs"'
     }
 
     Context 'API query field IDs and special values' {
