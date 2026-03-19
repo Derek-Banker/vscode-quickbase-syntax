@@ -1,11 +1,15 @@
 {
     "name": "quick-base-formula-syntax",
-    "displayName": "Quickbase Formula Syntax Highlighter",
-    "description": "Syntax Highlighting for Quickbase Formulas",
-    "version": "0.0.1",
+    "displayName": "Quickbase Formula & Query Tools",
+    "description": "Syntax highlighting, snippets, and validation for Quickbase formulas and API query strings",
+    "version": "0.1.0",
     "publisher": "klubnik",
     "icon": "images/icon.png",
     "repository": "https://github.com/jdklub/vscode-quickbase-formula",
+    "main": "./extension.js",
+    "activationEvents": [
+        "onLanguage:quickbase"
+    ],
     "engines": {
         "vscode": "^1.13.0"
     },
