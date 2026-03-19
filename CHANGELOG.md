@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Updated README and extension metadata to reflect formula and query-string support
 
 ## [Unreleased]
+- Added live Quickbase diagnostics for duplicate variables, unknown variables, malformed query strings, structural expression errors, and baseline type/function validation
 - Query field IDs such as `'6'` inside API query blocks now use a variable-style scope instead of a field-name scope
 - Variable declarations now scope `var`, the declared data type, and the variable name independently for more consistent coloring
 - Bracketed field and table references such as `[_DBID_PROJECTS]` now use the same scope as variable names

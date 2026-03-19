@@ -1,0 +1,7 @@
+var RecordList openProjects = GetRecords("{'6'.EX.'In Progress'}", [_DBID_PROJECTS]);
+var TextList owners = GetFieldValues($openProjects, 8);
+var Text ownerSummary = Join($owners, "; ");
+var Number ownerCount = Size($owners);
+var Bool hasOwners = not IsNull($ownerSummary) and $ownerCount > 0;
+
+$ownerSummary

@@ -318,7 +318,7 @@ if (-not (Test-Path $snapshotsDirectory)) {
     New-Item -ItemType Directory -Force $snapshotsDirectory | Out-Null
 }
 
-$fixturePaths = Get-ChildItem $fixturesDirectory -Filter *.quickbase | Sort-Object Name | Select-Object -ExpandProperty FullName
+$fixturePaths = Get-ChildItem $fixturesDirectory -Filter *.quickbase | Where-Object { $_.BaseName -notlike 'diagnostics-*' } | Sort-Object Name | Select-Object -ExpandProperty FullName
 if ($fixturePaths.Count -eq 0) {
     throw 'No .quickbase fixtures were found for snapshot testing.'
 }
@@ -355,4 +355,5 @@ foreach ($fixturePath in $fixturePaths) {
 if ($hasMismatch) {
     throw 'Grammar snapshots are out of date. Run the snapshot runner in update mode to refresh them.'
 }
+
 

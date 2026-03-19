@@ -1,6 +1,6 @@
-# Syntax Highlighter for Quickbase Formulas
+# Quickbase Formula & Query Tools
 
-Highlights Quickbase formulas, formula-query functions, and API query strings.
+Highlights and validates Quickbase formulas, formula-query functions, and API query strings.
 
 ![screenshot](https://raw.githubusercontent.com/jdklub/vscode-quickbase-formula/master/images/screenshot.png)
 
@@ -14,6 +14,7 @@ Files must have a .quickbase extension
 - Query-string highlighting for Quickbase API and formula-query expressions such as `"{'6'.EX.'1'}OR{'7'.GT.'5'}"`
 - Support for newer formula variable types like `TextList` and `RecordList`
 - Updated operator coverage for common Quickbase formula syntax such as `=`, `!=`, `<>`, and `&`
+- Live diagnostics for duplicate variables, unknown variables, malformed query strings, structural formula errors, and baseline function/type mismatches
 
 ## Examples
 
@@ -30,7 +31,7 @@ Join($owners, "; ")
 
 ## Known Issues
 
-Automated grammar regression tests cover key query and variable patterns, and sample-based grammar snapshots cover representative `.quickbase` files. Full extension-host integration tests and diagnostics are still not included yet.
+Automated grammar regression tests cover key query and variable patterns, sample-based grammar snapshots cover representative `.quickbase` files, and executable diagnostics fixtures cover the new validator behavior. Field-level type inference and exhaustive Quickbase function semantics are still intentionally conservative.
 
 ## Development
 
