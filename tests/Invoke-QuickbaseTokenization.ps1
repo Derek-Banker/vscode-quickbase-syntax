@@ -193,6 +193,10 @@ function Get-QueryBlocks {
 
         $cursor = $index + 1
         while ($cursor -lt $LineText.Length) {
+            if ($LineText[$cursor] -eq '"') {
+                break
+            }
+
             if (($cursor + 1) -lt $LineText.Length -and $LineText.Substring($cursor, 2) -eq '{{') {
                 $placeholderEnd = $LineText.IndexOf('}}', $cursor + 2)
                 if ($placeholderEnd -lt 0) {

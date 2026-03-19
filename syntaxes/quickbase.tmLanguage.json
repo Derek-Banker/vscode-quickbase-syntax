@@ -121,7 +121,93 @@
 				}
 			]
 		},
-		"comment": {
+				"apiQueryString": {
+			"patterns": [
+				{
+					"name": "meta.query.quickbase",
+					"begin": "\\{(?=\\s*(?:'[^']+'|\\d+)\\s*\\.[^\"\\r\\n]*\\})",
+					"beginCaptures": {
+						"0": {
+							"name": "keyword.control.block.quickbase.query"
+						}
+					},
+					"end": "\\}",
+					"endCaptures": {
+						"0": {
+							"name": "keyword.control.block.quickbase.query"
+						}
+					},
+					"patterns": [
+						{
+							"name": "variable.other.quickbase.query",
+							"match": "(?<=\\{\\s*)(?:'[^']+'|\\d+)(?=\\s*\\.)"
+						},
+						{
+							"name": "keyword.operator.comparison.quickbase.query",
+							"match": "(?<=\\.)\\b(?:CT|XCT|WC|HAS|XHAS|EX|TV|XTV|XEX|SW|XSW|BF|OBF|AF|OAF|IR|XIR|LT|LTE|GT|GTE)\\b(?=\\.)"
+						},
+						{
+							"name": "variable.other.quickbase.query",
+							"match": "\\{\\{[^{}]+\\}\\}"
+						},
+						{
+							"name": "constant.language.quickbase.query.special",
+							"match": "(?<=\\.[A-Z]+\\.)'(?i:today|_curuser_|-?\\d+\\s+days\\s+ago)'(?=\\s*\\})"
+						},
+						{
+							"name": "constant.language.quickbase.query.special",
+							"match": "(?<=\\.[A-Z]+\\.)(?i:today|_curuser_)(?=\\s*\\})"
+						},
+						{
+							"name": "constant.language.quickbase.query",
+							"match": "(?<=\\.[A-Z]+\\.)[A-Za-z_][A-Za-z0-9_]*(?=\\s*\\})"
+						},
+						{
+							"name": "string.quoted.double.quickbase.query",
+							"begin": "\"",
+							"end": "\"",
+							"patterns": [
+								{
+									"name": "constant.character.escape.quickbase",
+									"match": "\\\\."
+								}
+							]
+						},
+						{
+							"name": "string.quoted.single.quickbase.query",
+							"begin": "'",
+							"end": "'",
+							"patterns": [
+								{
+									"name": "constant.character.escape.quickbase",
+									"match": "\\\\."
+								},
+								{
+									"name": "variable.other.quickbase.query",
+									"match": "\\{\\{[^{}]+\\}\\}"
+								}
+							]
+						},
+						{
+							"name": "punctuation.separator.dot.quickbase.query",
+							"match": "\\."
+						}
+					]
+				},
+				{
+					"name": "keyword.operator.comparison.quickbase.query",
+					"match": "(?<=\\.)\\b(?:CT|XCT|WC|HAS|XHAS|EX|TV|XTV|XEX|SW|XSW|BF|OBF|AF|OAF|IR|XIR|LT|LTE|GT|GTE)\\b(?=\\.)"
+				},
+				{
+					"name": "variable.other.quickbase.query",
+					"match": "\\{\\{[^{}]+\\}\\}"
+				},
+				{
+					"name": "keyword.control.quickbase.query",
+					"match": "\\b(?i:and|or)\\b"
+				}
+			]
+		},		"comment": {
 			"patterns": [
 				{
 					"name": "comment.line.quickbase",
@@ -213,7 +299,7 @@
 			"end": "\"",
 			"patterns": [
 				{
-					"include": "#apiQuery"
+					"include": "#apiQueryString"
 				},
 				{
 					"name": "constant.character.escape.quickbase",

@@ -22,6 +22,12 @@ Describe 'Quickbase diagnostics' {
         ($output -join "`n") | Should Be 'OK'
     }
 
+    It 'accepts newline-separated statements without an explicit semicolon' {
+        $output = Invoke-QuickbaseDiagnostics -FixtureName 'diagnostics-newline-separated.quickbase'
+
+        ($output -join "`n") | Should Be 'OK'
+    }
+
     It 'flags semantic and type issues' {
         $output = Invoke-QuickbaseDiagnostics -FixtureName 'diagnostics-semantic-errors.quickbase'
         $joined = $output -join "`n"

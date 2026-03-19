@@ -20,6 +20,10 @@ Describe 'Quickbase grammar' {
             $queryBlockPattern.endCaptures.'0'.name | Should Be 'keyword.control.block.quickbase.query'
         }
 
+        It 'uses the string-safe query grammar inside quoted strings' {
+            $grammar.repository.strings.patterns[0].include | Should Be '#apiQueryString'
+        }
+
         It 'uses a variable scope for quoted or bare field IDs' {
             $fieldIdPattern.name | Should Be 'variable.other.quickbase.query'
         }
