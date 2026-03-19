@@ -2,7 +2,7 @@
 
 VS Code language support for Quickbase formulas and query expressions. This extension adds syntax highlighting, snippets, hover documentation, and live validation for `.quickbase` files so formula work is easier to read, write, and review.
 
-![screenshot](https://raw.githubusercontent.com/jdklub/vscode-quickbase-formula/master/images/screenshot.png)
+![screenshot](reference/example_image.png)
 
 ## Requirements
 
