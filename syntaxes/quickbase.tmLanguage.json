@@ -38,7 +38,7 @@
 			"patterns": [
 				{
 					"name": "meta.query.quickbase",
-					"begin": "\\{(?=\\s*'[^']+'\\s*\\.)",
+					"begin": "\\{(?=\\s*(?:'[^']+'|\\d+)\\s*\\.)",
 					"beginCaptures": {
 						"0": {
 							"name": "punctuation.section.block.begin.quickbase.query"
@@ -53,7 +53,7 @@
 					"patterns": [
 						{
 							"name": "variable.other.quickbase.query",
-							"match": "(?<=\\{\\s*)'[^']+'(?=\\s*\\.)"
+							"match": "(?<=\\{\\s*)(?:'[^']+'|\\d+)(?=\\s*\\.)"
 						},
 						{
 							"name": "keyword.operator.comparison.quickbase.query",
@@ -62,6 +62,18 @@
 						{
 							"name": "variable.other.quickbase.query",
 							"match": "\\{\\{[^{}]+\\}\\}"
+						},
+						{
+							"name": "constant.language.quickbase.query.special",
+							"match": "(?<=\\.[A-Z]+\\.)'(?i:today|_curuser_|-?\\d+\\s+days\\s+ago)'(?=\\s*\\})"
+						},
+						{
+							"name": "constant.language.quickbase.query.special",
+							"match": "(?<=\\.[A-Z]+\\.)(?i:today|_curuser_)(?=\\s*\\})"
+						},
+						{
+							"name": "constant.language.quickbase.query",
+							"match": "(?<=\\.[A-Z]+\\.)[A-Za-z_][A-Za-z0-9_]*(?=\\s*\\})"
 						},
 						{
 							"name": "string.quoted.double.quickbase.query",
@@ -140,11 +152,11 @@
 		"storage": {
 			"patterns": [
 				{
-					"name": "storage.type.var.quickbase",
+					"name": "keyword.declaration.quickbase",
 					"match": "\\b(?i:var)\\b"
 				},
 				{
-					"name": "storage.modifier.quickbase",
+					"name": "storage.type.quickbase",
 					"match": "\\b(?i:bool|number|text|textlist|date|datetime|duration|timeofday|workdate|user|recordlist)\\b"
 				}
 			]
@@ -167,10 +179,10 @@
 					"match": "\\b((?i:var))\\s+((?i:bool|number|text|textlist|date|datetime|duration|timeofday|workdate|user|recordlist))\\s+([A-Za-z][A-Za-z0-9_]*)\\b",
 					"captures": {
 						"1": {
-							"name": "storage.type.var.quickbase"
+							"name": "keyword.declaration.quickbase"
 						},
 						"2": {
-							"name": "storage.modifier.quickbase"
+							"name": "storage.type.quickbase"
 						},
 						"3": {
 							"name": "variable.other.quickbase"
@@ -208,3 +220,5 @@
 	},
 	"scopeName": "source.quickbase"
 }
+
+

@@ -110,8 +110,8 @@ function Get-DeclarationTokens {
         }
 
         foreach ($captureInfo in @(
-            @{ Group = 1; Scope = 'storage.type.var.quickbase' },
-            @{ Group = 2; Scope = 'storage.modifier.quickbase' },
+            @{ Group = 1; Scope = 'keyword.declaration.quickbase' },
+            @{ Group = 2; Scope = 'storage.type.quickbase' },
             @{ Group = 3; Scope = 'variable.other.quickbase' }
         )) {
             $group = $match.Groups[$captureInfo.Group]
@@ -151,6 +151,8 @@ function Get-TopLevelTokens {
     $candidates += Get-RegexTokens -Text $LineText -Pattern $Grammar.repository.numeric.patterns[0].match -Scope 'constant.numeric.quickbase'
     $candidates += Get-RegexTokens -Text $LineText -Pattern $Grammar.repository.operator.patterns[0].match -Scope 'keyword.operator.quickbase'
     $candidates += Get-RegexTokens -Text $LineText -Pattern $Grammar.repository.support.patterns[0].match -Scope 'support.function.quickbase'
+    $candidates += Get-RegexTokens -Text $LineText -Pattern $Grammar.repository.storage.patterns[0].match -Scope $Grammar.repository.storage.patterns[0].name
+    $candidates += Get-RegexTokens -Text $LineText -Pattern $Grammar.repository.storage.patterns[1].match -Scope $Grammar.repository.storage.patterns[1].name
 
     $filtered = foreach ($token in $candidates) {
         if ($token.Scope -ne 'comment.line.quickbase' -and (Test-InRanges -Start $token.Start -End $token.End -Ranges $commentRanges)) {
@@ -185,7 +187,7 @@ function Get-QueryBlocks {
         }
 
         $remaining = $LineText.Substring($index)
-        if (-not [regex]::IsMatch($remaining, '^\{(?=\s*''[^'']+''\s*\.)')) {
+        if (-not [regex]::IsMatch($remaining, '^\{(?=\s*(?:''[^'']+''|\d+)\s*\.)')) {
             continue
         }
 
@@ -229,6 +231,9 @@ function Get-QuerySnapshots {
     $fieldPattern = $Grammar.repository.apiQuery.patterns[0].patterns[0].match
     $operatorPattern = $Grammar.repository.apiQuery.patterns[0].patterns[1].match
     $placeholderPattern = $Grammar.repository.apiQuery.patterns[0].patterns[2].match
+    $specialQuotedValuePattern = $Grammar.repository.apiQuery.patterns[0].patterns[3].match
+    $specialBareValuePattern = $Grammar.repository.apiQuery.patterns[0].patterns[4].match
+    $bareValuePattern = $Grammar.repository.apiQuery.patterns[0].patterns[5].match
     $doubleQuotedPattern = '"(?:[^"\\]|\\.)*"'
     $singleQuotedPattern = '''(?:[^''\\]|\\.)*'''
     $dotPattern = '\.'
@@ -241,17 +246,35 @@ function Get-QuerySnapshots {
         $queryEnd = $queryBlock.End
 
         $fieldTokens = Get-RegexTokens -Text $queryText -Pattern $fieldPattern -Scope 'variable.other.quickbase.query' -Offset $queryStart
+        $specialQuotedTokens = Get-RegexTokens -Text $queryText -Pattern $specialQuotedValuePattern -Scope 'constant.language.quickbase.query.special' -Offset $queryStart
+        $specialBareTokens = Get-RegexTokens -Text $queryText -Pattern $specialBareValuePattern -Scope 'constant.language.quickbase.query.special' -Offset $queryStart
         $fieldRanges = @($fieldTokens | ForEach-Object { New-Range -Start $_.Start -End $_.End })
+        $specialRanges = @((@($specialQuotedTokens) + @($specialBareTokens)) | ForEach-Object { New-Range -Start $_.Start -End $_.End })
 
         $tokens = @()
         $tokens += New-Token -Start $queryStart -End ($queryStart + 1) -Text '{' -Scope 'punctuation.section.block.begin.quickbase.query'
         $tokens += $fieldTokens
         $tokens += Get-RegexTokens -Text $queryText -Pattern $operatorPattern -Scope 'keyword.operator.comparison.quickbase.query' -Offset $queryStart
         $tokens += Get-RegexTokens -Text $queryText -Pattern $placeholderPattern -Scope 'variable.other.quickbase.query' -Offset $queryStart
+        $tokens += $specialQuotedTokens
+        $tokens += $specialBareTokens
+
+        foreach ($bareToken in (Get-RegexTokens -Text $queryText -Pattern $bareValuePattern -Scope 'constant.language.quickbase.query' -Offset $queryStart)) {
+            if (Test-InRanges -Start $bareToken.Start -End $bareToken.End -Ranges $specialRanges) {
+                continue
+            }
+
+            $tokens += $bareToken
+        }
+
         $tokens += Get-RegexTokens -Text $queryText -Pattern $doubleQuotedPattern -Scope 'string.quoted.double.quickbase.query' -Offset $queryStart
 
         foreach ($singleToken in (Get-RegexTokens -Text $queryText -Pattern $singleQuotedPattern -Scope 'string.quoted.single.quickbase.query' -Offset $queryStart)) {
             if (Test-InRanges -Start $singleToken.Start -End $singleToken.End -Ranges $fieldRanges) {
+                continue
+            }
+
+            if (Test-InRanges -Start $singleToken.Start -End $singleToken.End -Ranges $specialRanges) {
                 continue
             }
 
@@ -355,5 +378,3 @@ foreach ($fixturePath in $fixturePaths) {
 if ($hasMismatch) {
     throw 'Grammar snapshots are out of date. Run the snapshot runner in update mode to refresh them.'
 }
-
-

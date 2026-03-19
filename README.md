@@ -11,7 +11,7 @@ Files must have a .quickbase extension
 ## What's Included
 
 - Formula function highlighting for the legacy built-ins plus newer Quickbase additions like `GetRecords()`, `GetFieldValues()`, `Size()`, `SumValues()`, `Join()`, `Median()`, regex functions, `SHA256()`, and `ToUnixTime()`
-- Query-string highlighting for Quickbase API and formula-query expressions such as `"{'6'.EX.'1'}OR{'7'.GT.'5'}"`
+- Query-string highlighting for Quickbase API and formula-query expressions such as `"{'6'.EX.'1'}OR{'7'.GT.'5'}"`, including bare values like `today` and `_curuser_`
 - Support for newer formula variable types like `TextList` and `RecordList`
 - Updated operator coverage for common Quickbase formula syntax such as `=`, `!=`, `<>`, and `&`
 - Live diagnostics for duplicate variables, invalid variable names, malformed query strings, regex-pattern literal rules, structural formula errors, and baseline function/type mismatches
@@ -56,5 +56,6 @@ powershell -ExecutionPolicy Bypass -File .\tests\Invoke-QuickbaseTokenization.ps
 ### 0.1.0
 
 Refreshes the grammar for newer Quickbase formulas and adds API query-string highlighting.
+
 
 

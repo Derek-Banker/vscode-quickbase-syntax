@@ -22,13 +22,13 @@
                              "start":  0,
                              "end":  3,
                              "text":  "var",
-                             "scope":  "storage.type.var.quickbase"
+                             "scope":  "keyword.declaration.quickbase"
                          },
                          {
                              "start":  4,
                              "end":  14,
                              "text":  "RecordList",
-                             "scope":  "storage.modifier.quickbase"
+                             "scope":  "storage.type.quickbase"
                          },
                          {
                              "start":  15,
@@ -121,13 +121,13 @@
                              "start":  0,
                              "end":  3,
                              "text":  "var",
-                             "scope":  "storage.type.var.quickbase"
+                             "scope":  "keyword.declaration.quickbase"
                          },
                          {
                              "start":  4,
                              "end":  12,
                              "text":  "TextList",
-                             "scope":  "storage.modifier.quickbase"
+                             "scope":  "storage.type.quickbase"
                          },
                          {
                              "start":  13,

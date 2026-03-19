@@ -53,4 +53,31 @@ Describe 'Quickbase hover documentation' {
         $joined | Should Match 'SIGNATURE\|GetRecords\(Text, Table\)'
         $joined | Should Match 'SUMMARY\|Returns a RecordList of records that match a Quickbase query string\.'
     }
+
+    It 'describes quoted today query inserts' {
+        $output = Invoke-QuickbaseHover -FixtureName 'hover-reference.quickbase' -Line 5 -Character 35
+        $joined = $output -join "`n"
+
+        $joined | Should Match '^KIND\|querySpecialValue'
+        $joined | Should Match "LABEL\|'today'"
+        $joined | Should Match "SUMMARY\|Special date query value that resolves to today's date for Date and Date/Time filters\."
+    }
+
+    It 'describes relative date query inserts' {
+        $output = Invoke-QuickbaseHover -FixtureName 'hover-reference.quickbase' -Line 6 -Character 40
+        $joined = $output -join "`n"
+
+        $joined | Should Match '^KIND\|querySpecialValue'
+        $joined | Should Match "LABEL\|'-1 days ago'"
+        $joined | Should Match "SUMMARY\|Relative date query value such as '2 days ago' or '-1 days ago'\."
+    }
+
+    It 'describes current-user query inserts' {
+        $output = Invoke-QuickbaseHover -FixtureName 'hover-reference.quickbase' -Line 7 -Character 36
+        $joined = $output -join "`n"
+
+        $joined | Should Match '^KIND\|querySpecialValue'
+        $joined | Should Match "LABEL\|'_curuser_'"
+        $joined | Should Match 'SUMMARY\|Special user query value that resolves to the current user\.'
+    }
 }

@@ -6,13 +6,13 @@
                          "start":  0,
                          "end":  3,
                          "text":  "var",
-                         "scope":  "storage.type.var.quickbase"
+                         "scope":  "keyword.declaration.quickbase"
                      },
                      {
                          "start":  4,
                          "end":  8,
                          "text":  "Bool",
-                         "scope":  "storage.modifier.quickbase"
+                         "scope":  "storage.type.quickbase"
                      },
                      {
                          "start":  9,

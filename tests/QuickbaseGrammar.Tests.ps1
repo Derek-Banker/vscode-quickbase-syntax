@@ -8,20 +8,48 @@ Describe 'Quickbase grammar' {
         $grammar.scopeName | Should Be 'source.quickbase'
     }
 
-    Context 'API query field IDs' {
+    Context 'API query field IDs and special values' {
         $queryBlockPattern = $grammar.repository.apiQuery.patterns[0]
         $fieldIdPattern = $queryBlockPattern.patterns[0]
+        $specialQuotedValuePattern = $queryBlockPattern.patterns[3]
+        $specialBareValuePattern = $queryBlockPattern.patterns[4]
 
-        It 'uses a variable scope for quoted field IDs' {
+        It 'uses a variable scope for quoted or bare field IDs' {
             $fieldIdPattern.name | Should Be 'variable.other.quickbase.query'
         }
 
-        It 'matches the quoted field ID before the query operator' {
-            $sample = "{'6'.EX.'1'}"
+        It 'matches the field ID before the query operator' {
+            $sample = '{6.EX.today}'
             $match = [regex]::Match($sample, $fieldIdPattern.match)
 
             $match.Success | Should Be $true
-            $match.Value | Should Be "'6'"
+            $match.Value | Should Be '6'
+        }
+
+        It 'matches quoted special query values like today' {
+            $sample = "{'13'.EX.'today'}"
+            $match = [regex]::Match($sample, $specialQuotedValuePattern.match)
+
+            $specialQuotedValuePattern.name | Should Be 'constant.language.quickbase.query.special'
+            $match.Success | Should Be $true
+            $match.Value | Should Be "'today'"
+        }
+
+        It 'matches relative date inserts like -1 days ago' {
+            $sample = "{'13'.EX.'-1 days ago'}"
+            $match = [regex]::Match($sample, $specialQuotedValuePattern.match)
+
+            $match.Success | Should Be $true
+            $match.Value | Should Be "'-1 days ago'"
+        }
+
+        It 'matches bare special query values like today when unquoted' {
+            $sample = "{'6'.EX.today}"
+            $match = [regex]::Match($sample, $specialBareValuePattern.match)
+
+            $specialBareValuePattern.name | Should Be 'constant.language.quickbase.query.special'
+            $match.Success | Should Be $true
+            $match.Value | Should Be 'today'
         }
     }
 
@@ -30,9 +58,9 @@ Describe 'Quickbase grammar' {
         $bracketReferencePattern = $grammar.repository.variable.patterns[0]
         $variableDeclarationPattern = $grammar.repository.variable.patterns[1]
 
-        It 'gives var a dedicated scope' {
-            $varKeywordPattern.name | Should Be 'storage.type.var.quickbase'
-            $variableDeclarationPattern.captures.'1'.name | Should Be 'storage.type.var.quickbase'
+        It 'gives var a dedicated keyword scope' {
+            $varKeywordPattern.name | Should Be 'keyword.declaration.quickbase'
+            $variableDeclarationPattern.captures.'1'.name | Should Be 'keyword.declaration.quickbase'
         }
 
         It 'captures var, the declared type, and the variable name separately' {
@@ -46,7 +74,7 @@ Describe 'Quickbase grammar' {
         }
 
         It 'keeps the datatype and variable name on their own scopes' {
-            $variableDeclarationPattern.captures.'2'.name | Should Be 'storage.modifier.quickbase'
+            $variableDeclarationPattern.captures.'2'.name | Should Be 'storage.type.quickbase'
             $variableDeclarationPattern.captures.'3'.name | Should Be 'variable.other.quickbase'
         }
 
