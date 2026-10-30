@@ -8,9 +8,11 @@ function activate(context) {
     var functionCatalog = quickbaseLanguageService.buildFunctionCatalog(snippets, quickbaseReference);
     var diagnostics = vscode.languages.createDiagnosticCollection('quickbase');
     var timers = Object.create(null);
+    var disposed = false;
 
     function isQuickbaseDocument(document) {
-        return document && (document.languageId === 'quickbase' || /\.quickbase$/i.test(document.fileName || ''));
+        return !disposed && document && !document.isClosed &&
+            (document.languageId === 'quickbase' || /\.quickbase$/i.test(document.fileName || ''));
     }
 
     function toSeverity(level) {
@@ -113,6 +115,15 @@ function activate(context) {
         }, 150);
     }
 
+    context.subscriptions.push({
+        dispose: function () {
+            disposed = true;
+            Object.keys(timers).forEach(function (key) {
+                clearTimeout(timers[key]);
+                delete timers[key];
+            });
+        }
+    });
     context.subscriptions.push(diagnostics);
     context.subscriptions.push(vscode.languages.registerHoverProvider('quickbase', {
         provideHover: createHover
@@ -122,6 +133,11 @@ function activate(context) {
         scheduleValidation(event.document);
     }));
     context.subscriptions.push(vscode.workspace.onDidCloseTextDocument(function (document) {
+        var key = document.uri.toString();
+        if (timers[key]) {
+            clearTimeout(timers[key]);
+            delete timers[key];
+        }
         diagnostics.delete(document.uri);
     }));
 

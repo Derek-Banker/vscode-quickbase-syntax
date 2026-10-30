@@ -12,7 +12,13 @@ function Invoke-QuickbaseHover {
         [int]$Character
     )
 
-    @(cscript //nologo .\tests\RunQuickbaseHover.js (Join-Path .\tests\fixtures $FixtureName) $Line $Character)
+    $runner = Join-Path $PSScriptRoot 'RunQuickbaseHover.js'
+    $fixture = Join-Path (Join-Path $PSScriptRoot 'fixtures') $FixtureName
+    $output = @(& node $runner $fixture $Line $Character)
+    if ($LASTEXITCODE -ne 0) {
+        throw ($output -join "`n")
+    }
+    $output
 }
 
 Describe 'Quickbase hover documentation' {

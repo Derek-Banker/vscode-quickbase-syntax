@@ -1747,6 +1747,96 @@
         ],
         "description": "Returns the date obtained by adding n days to the date d. The calculation includes the date d as one of the n days. For example, adding 2 days to 10/31/2003 which is a Friday will give you 11/01/2003 since it counts 10/31/2003 as 1 day and 11/01/2003 (a Saturday) as the second day."
     },
+    "Average (RecordList records, Number fid)": {
+        "prefix": ["Average"],
+        "body": ["Average($1, $2)"],
+        "description": "Returns the average numeric value in field ID fid across a record list."
+    },
+    "Distance (Number lat1, Number lon1, Number lat2, Number lon2)": {
+        "prefix": ["Distance"],
+        "body": ["Distance($1, $2, $3, $4)"],
+        "description": "Returns the straight-line distance in miles between two decimal-degree coordinates."
+    },
+    "Distance (Number lat1, Number lon1, Number lat2, Number lon2, Text unit)": {
+        "prefix": ["Distance"],
+        "body": ["Distance($1, $2, $3, $4, \"${5|miles,km|}\")"],
+        "description": "Returns the straight-line distance between two decimal-degree coordinates in miles or km."
+    },
+    "Find (Text text, Text searchText)": {
+        "prefix": ["Find"],
+        "body": ["Find($1, $2)"],
+        "description": "Returns the first position of searchText in text, or zero if it does not occur."
+    },
+    "Max (RecordList records, Number fid)": {
+        "prefix": ["Max"],
+        "body": ["Max($1, $2)"],
+        "description": "Returns the maximum numeric value in field ID fid across a record list."
+    },
+    "Median (Number first, Number second, ...)": {
+        "prefix": ["Median"],
+        "body": ["Median($1, $2)"],
+        "description": "Returns the median of two or more numeric values. Null values are ignored."
+    },
+    "Median (Duration first, Duration second, ...)": {
+        "prefix": ["Median"],
+        "body": ["Median($1, $2)"],
+        "description": "Returns the median of two or more duration values. Null values are ignored."
+    },
+    "Min (RecordList records, Number fid)": {
+        "prefix": ["Min"],
+        "body": ["Min($1, $2)"],
+        "description": "Returns the minimum numeric value in field ID fid across a record list."
+    },
+    "NameOfMonth (Date value, Text format)": {
+        "prefix": ["NameOfMonth"],
+        "body": ["NameOfMonth($1, \"short\")"],
+        "description": "Returns the abbreviated name of the month for a date when format is short."
+    },
+    "NameOfMonth (Date/Time value, Text format)": {
+        "prefix": ["NameOfMonth"],
+        "body": ["NameOfMonth($1, \"short\")"],
+        "description": "Returns the abbreviated name of the month for a date/time when format is short."
+    },
+    "NameOfMonth (Number value, Text format)": {
+        "prefix": ["NameOfMonth"],
+        "body": ["NameOfMonth($1, \"short\")"],
+        "description": "Returns the abbreviated name of the numbered month when format is short."
+    },
+    "RemoveNewlineCharacters (Text text)": {
+        "prefix": ["RemoveNewlineCharacters"],
+        "body": ["RemoveNewlineCharacters($1)"],
+        "description": "Replaces each group of newline characters with a space."
+    },
+    "StDev (RecordList records, Number fid)": {
+        "prefix": ["StDev"],
+        "body": ["StDev($1, $2)"],
+        "description": "Returns the standard deviation of numeric values in field ID fid across a record list."
+    },
+    "ToDate (Number value)": {
+        "prefix": ["ToDate"],
+        "body": ["ToDate($1)"],
+        "description": "Converts Unix time in milliseconds to a date."
+    },
+    "ToDate (Text value, Text format)": {
+        "prefix": ["ToDate"],
+        "body": ["ToDate($1, $2)"],
+        "description": "Converts text to a date using the supplied date format."
+    },
+    "ToFormattedText (Number value, Text format, Number grouping)": {
+        "prefix": ["ToFormattedText"],
+        "body": ["ToFormattedText($1, $2, ${3|3,4|})"],
+        "description": "Formats a number with separators that start after three or four digits."
+    },
+    "ToUnixTime (Date value)": {
+        "prefix": ["ToUnixTime"],
+        "body": ["ToUnixTime($1)"],
+        "description": "Converts a date to Unix time."
+    },
+    "URLDecode (Text text)": {
+        "prefix": ["URLDecode"],
+        "body": ["URLDecode($1)"],
+        "description": "Decodes URL-encoded text."
+    },
     "Year (Date d)": {
         "prefix": [
             "Year"
