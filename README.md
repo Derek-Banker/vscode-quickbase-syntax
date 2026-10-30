@@ -6,6 +6,8 @@ VS Code language support for Quickbase formulas and query expressions. This exte
 
 ## Requirements
 
+VS Code 1.18 or later.
+
 Use the `.quickbase` file extension for Quickbase formulas, formula-query expressions, and standalone query text.
 
 ## Features
@@ -15,7 +17,9 @@ Use the `.quickbase` file extension for Quickbase formulas, formula-query expres
 - Snippets for Quickbase functions, variables, and common authoring patterns
 - Live diagnostics for structural formula errors, malformed query expressions, duplicate variables, invalid variable names, unknown variable types, unknown functions, regex-pattern issues, and baseline argument/type mismatches
 - Hover documentation for formula-query functions, query operators, variable declarations, variable types, bracketed references, and special query values
-- Grammar, hover, and validation regression coverage through PowerShell/Pester tests and committed tokenization snapshots
+- Optional field type hints in comments for diagnostics and hover documentation
+- Function coverage through the October 2026 documentation audit, including `Distance()`, `Find()`, `RemoveNewlineCharacters()`, `StDev()`, and `URLDecode()`
+- Regression tests for the language services and extension, plus PowerShell/Pester grammar checks and committed snapshots
 
 ## Examples
 
@@ -30,19 +34,66 @@ Join($owners, "; ")
 var Text todayQuery = "{'13'.EX.'today'}AND{'20'.TV.'_curuser_'}";
 ```
 
+Queries can include grouped conditions and numeric values without quotes:
+
+```quickbase
+GetRecords("({6.EX.'Open'}OR{6.EX.'Pending'})AND{72.LT.150}")
+```
+
+Enclose decimal query values in quotes, as in `{12.EX.'5.6'}`. Quickbase truncates an unquoted decimal value. The extension reports warning `QB114` for this case.
+
+`Distance()` accepts four coordinates and an optional unit (`"miles"` or `"km"`):
+
+```quickbase
+Distance([Customer Latitude], [Customer Longitude], [Warehouse Latitude], [Warehouse Longitude], "km")
+```
+
+## Field type hints
+
+Use a structured comment to specify a field type:
+
+```quickbase
+// @qb-type [Price]: Number
+// @qb-type [Quantity]: Number
+
+var Number total = [Price] * [Quantity];
+$total
+```
+
+Quickbase treats `//` through the end of the line as a comment. These hints can stay in a formula that you paste into Quickbase. See [Quickbase comment syntax](https://help.quickbase.com/v1/docs/best-practices-writing-formulas).
+
+The extension uses hints for assignment checks, function argument checks, arithmetic, and field hovers. A hint describes the existing field type. It does not convert values or change how Quickbase evaluates the formula.
+
+- Hints apply throughout one file. The field name must match the reference, including spelling and case.
+- Supported types: `Bool` (or `Boolean`), `Number` (or `Numeric`), `Text`, `TextList`, `Date`, `DateTime` (or `Date/Time`), `Duration`, `TimeOfDay`, `WorkDate`, `User`, and `UserList`.
+- Invalid hints produce warning `QB112`. Conflicting hints produce warning `QB113` and leave that field untyped.
+- Fields without hints retain conservative type inference. Formula variables use their native `var Type name` declarations.
+
 ## Current Scope
 
-The extension is intentionally lightweight and editor-focused. It does not execute formulas or connect to Quickbase metadata, so field-level inference and exhaustive function semantics are still conservative.
+The extension does not execute formulas or connect to Quickbase metadata. Field hints are local assertions. The extension cannot compare them with the actual field types in your application.
 
 ## Development
 
 Reference notes gathered from current Quickbase documentation live in `docs/quickbase-documentation-notes.md`.
 
-Run the full test suite from PowerShell:
+Use Node.js 22 or later for development. The tests require no npm dependencies.
+
+Run the language-service, hover, fixture, and extension regression tests:
+
+```sh
+npm test
+```
+
+With an installed copy of VS Code, the suite also checks actual TextMate and Oniguruma tokens. For a custom installation, set `QUICKBASE_VSCODE_APP` to its `resources/app` directory. The suite skips that check without an installed copy.
+
+On Windows, also run the grammar checks and existing fixture tests with PowerShell and Pester 3:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -Command "Invoke-Pester .\tests"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "Invoke-Pester .\tests -EnableExit"
 ```
+
+The fixture runners use Node.js. They do not require Windows Script Host. The grammar snapshots contain regex-derived tokens. The Node suite also checks the actual TextMate engine.
 
 Refresh committed tokenization snapshots after an intentional grammar change:
 

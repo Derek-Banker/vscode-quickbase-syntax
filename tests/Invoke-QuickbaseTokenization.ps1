@@ -238,6 +238,10 @@ function Get-QuerySnapshots {
     $specialQuotedValuePattern = $Grammar.repository.apiQuery.patterns[0].patterns[3].match
     $specialBareValuePattern = $Grammar.repository.apiQuery.patterns[0].patterns[4].match
     $bareValuePattern = $Grammar.repository.apiQuery.patterns[0].patterns[5].match
+    $numericValueRule = $Grammar.repository.apiQuery.patterns[0].patterns |
+        Where-Object { $_.PSObject.Properties['name'] -and $_.name -eq 'constant.numeric.quickbase.query' } |
+        Select-Object -First 1
+    $numericValuePattern = $numericValueRule.match
     $doubleQuotedPattern = '"(?:[^"\\]|\\.)*"'
     $singleQuotedPattern = '''(?:[^''\\]|\\.)*'''
     $dotPattern = '\.'
@@ -252,6 +256,8 @@ function Get-QuerySnapshots {
         $fieldTokens = Get-RegexTokens -Text $queryText -Pattern $fieldPattern -Scope 'variable.other.quickbase.query' -Offset $queryStart
         $specialQuotedTokens = Get-RegexTokens -Text $queryText -Pattern $specialQuotedValuePattern -Scope 'constant.language.quickbase.query.special' -Offset $queryStart
         $specialBareTokens = Get-RegexTokens -Text $queryText -Pattern $specialBareValuePattern -Scope 'constant.language.quickbase.query.special' -Offset $queryStart
+        $numericTokens = @(Get-RegexTokens -Text $queryText -Pattern $numericValuePattern -Scope 'constant.numeric.quickbase.query' -Offset $queryStart)
+        $numericRanges = @($numericTokens | ForEach-Object { New-Range -Start $_.Start -End $_.End })
         $fieldRanges = @($fieldTokens | ForEach-Object { New-Range -Start $_.Start -End $_.End })
         $specialRanges = @((@($specialQuotedTokens) + @($specialBareTokens)) | ForEach-Object { New-Range -Start $_.Start -End $_.End })
 
@@ -262,6 +268,7 @@ function Get-QuerySnapshots {
         $tokens += Get-RegexTokens -Text $queryText -Pattern $placeholderPattern -Scope 'variable.other.quickbase.query' -Offset $queryStart
         $tokens += $specialQuotedTokens
         $tokens += $specialBareTokens
+        $tokens += $numericTokens
 
         foreach ($bareToken in (Get-RegexTokens -Text $queryText -Pattern $bareValuePattern -Scope 'constant.language.quickbase.query' -Offset $queryStart)) {
             if (Test-InRanges -Start $bareToken.Start -End $bareToken.End -Ranges $specialRanges) {
@@ -285,7 +292,11 @@ function Get-QuerySnapshots {
             $tokens += $singleToken
         }
 
-        $tokens += Get-RegexTokens -Text $queryText -Pattern $dotPattern -Scope 'punctuation.separator.dot.quickbase.query' -Offset $queryStart
+        foreach ($dotToken in (Get-RegexTokens -Text $queryText -Pattern $dotPattern -Scope 'punctuation.separator.dot.quickbase.query' -Offset $queryStart)) {
+            if (-not (Test-InRanges -Start $dotToken.Start -End $dotToken.End -Ranges $numericRanges)) {
+                $tokens += $dotToken
+            }
+        }
         $tokens += New-Token -Start ($queryEnd - 1) -End $queryEnd -Text '}' -Scope 'keyword.control.block.quickbase.query'
 
         $orderedTokens = @(

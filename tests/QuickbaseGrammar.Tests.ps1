@@ -77,6 +77,48 @@ Describe 'Quickbase grammar' {
             $match.Success | Should Be $true
             $match.Value | Should Be 'AND'
         }
+
+        It 'matches documented quoted relative date ranges' {
+            foreach ($value in @('tomorrow', 'yesterday', 'this wk', 'last mon', 'next q', 'this fq', 'last y', 'next fy', 'last 5 d', 'next 2 wk', 'last 3 mon', 'next 4 q', 'last 2 fq', 'next 3 y', 'last 2 fy')) {
+                $sample = "{7.IR.'$value'}"
+                $match = [regex]::Match($sample, $specialQuotedValuePattern.match)
+
+                $match.Success | Should Be $true
+                $match.Value | Should Be "'$value'"
+            }
+            [regex]::IsMatch("{7.EX.'next fy'}", $specialQuotedValuePattern.match) | Should Be $false
+        }
+
+        It 'keeps new relative date ranges quoted' {
+            [regex]::IsMatch('{7.IR.tomorrow}', $specialBareValuePattern.match) | Should Be $false
+        }
+
+        It 'scopes bare numeric query values' {
+            $numericPattern = $queryBlockPattern.patterns | Where-Object { $_.name -eq 'constant.numeric.quickbase.query' }
+            foreach ($value in @('150', '-10', '+4', '0.5', '.5', '-.5')) {
+                $sample = "{72.LT.$value}"
+                $match = [regex]::Match($sample, $numericPattern.match)
+
+                $match.Success | Should Be $true
+                $match.Value | Should Be $value
+            }
+        }
+
+        It 'defines nested query group scopes outside and inside formula strings' {
+            $grammar.repository.apiQueryGroup.beginCaptures.'0'.name | Should Be 'punctuation.section.group.begin.quickbase.query'
+            $grammar.repository.apiQueryGroup.endCaptures.'0'.name | Should Be 'punctuation.section.group.end.quickbase.query'
+            $grammar.repository.apiQueryStringGroup.patterns[0].include | Should Be '#apiQueryString'
+            [regex]::IsMatch("(({6.EX.'A'}OR{6.EX.'B'}))", $grammar.repository.apiQueryGroup.begin) | Should Be $true
+        }
+    }
+
+    It 'recognizes the current documented function additions' {
+        foreach ($name in @('Distance', 'Find', 'RemoveNewlineCharacters', 'StDev', 'URLDecode')) {
+            $match = [regex]::Match("$name()", $grammar.repository.support.patterns[0].match)
+
+            $match.Success | Should Be $true
+            $match.Value | Should Be $name
+        }
     }
 
     Context 'variable declarations' {

@@ -6,7 +6,13 @@ function Invoke-QuickbaseDiagnostics {
         [string]$FixtureName
     )
 
-    @(cscript //nologo .\tests\RunQuickbaseDiagnostics.js (Join-Path .\tests\fixtures $FixtureName))
+    $runner = Join-Path $PSScriptRoot 'RunQuickbaseDiagnostics.js'
+    $fixture = Join-Path (Join-Path $PSScriptRoot 'fixtures') $FixtureName
+    $output = @(& node $runner $fixture)
+    if ($LASTEXITCODE -ne 0) {
+        throw ($output -join "`n")
+    }
+    $output
 }
 
 Describe 'Quickbase diagnostics' {

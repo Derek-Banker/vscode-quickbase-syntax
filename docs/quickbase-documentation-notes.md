@@ -1,33 +1,41 @@
 # Quickbase Documentation Notes
 
-Updated: 2026-03-19
+Updated: 2026-10-30
 
-Purpose: capture the current official Quickbase formula and query documentation we should use as the source of truth for syntax, validation, and future completion/hover work in this extension.
+Purpose: record the official sources for syntax, validation, snippets, and hover documentation in this extension.
+
+The October audit compared the current function reference with the extension and checked released notes from March 19 through October 30, 2026. The reference contained 135 function names and 190 overload entries, excluding operators. The extension also supports the documented `Avg()` alias.
 
 ## Official sources reviewed
 
 - Formula components: https://help.quickbase.com/docs/formula-components
 - Formula variables: https://help.quickbase.com/docs/formula-variables
-- Creating and using application variables: https://help.quickbase.com/variables
+- Creating and using application variables: https://help.quickbase.com/docs/creating-and-using-application-variables
 - What are formula queries?: https://help.quickbase.com/docs/what-are-formula-queries
 - Build queries for your formulas: https://help.quickbase.com/docs/build-queries-for-your-formulas
 - Formula queries: field types, type conversions, and variables: https://help.quickbase.com/docs/formula-queries-field-types-type-conversions-and-variables
 - Formula queries and performance: https://help.quickbase.com/docs/formula-queries-and-performance
 - Find field, record IDs, and table aliases: https://help.quickbase.com/docs/find-field-record-ids-and-table-aliases
 - API_DoQuery: https://help.quickbase.com/docs/api-doquery
-- Regex in formulas: https://help.quickbase.com/hc/en-us/articles/32800503697044-Regex-in-formulas
+- [Components of a query](https://help.quickbase.com/v1/docs/components-of-a-query)
+- Regex in formulas: https://help.quickbase.com/docs/regex-in-formulas
 - Quickbase December 2022 release notes: https://help.quickbase.com/docs/quickbase-december-2022-release-notes
 - Quickbase January 2025 release notes: https://help.quickbase.com/docs/quickbase-january-2025-release-notes
-- Quickbase April 2025 release notes: https://help.quickbase.com/hc/en-us/articles/36386041144852-Quickbase-April-2025-Release-Notes
+- Quickbase April 2025 release notes: https://help.quickbase.com/docs/quickbase-april-2025-release-notes
 - Quickbase May 2025 release notes: https://help.quickbase.com/docs/quickbase-may-2025-release-notes
-- Secure links: https://help.quickbase.com/hc/en-us/articles/29353956195220-Secure-links
+- Secure links: https://help.quickbase.com/docs/secure-links
+- [Current formula function reference](https://login.quickbase.com/nav/app/9kaw8phg/table/6ewwzuuj/action/q?qid=6)
+- [Distance function](https://help.quickbase.com/docs/distance-formula)
+- [Relative date ranges](https://help.quickbase.com/v1/docs/understanding-relative-date-ranges)
+- [Release note index](https://help.quickbase.com/docs/release-notes)
+- [Distance release, July 9, 2026](https://resources.quickbase.com/nav/app/bu9ax9c5r/table/bu9a2h65e/action/dr?rid=766&ifv=1)
 
 ## Local seed files reviewed
 
-- `C:\CFS - Derek\Reference Documents\QuickBase Formula Documentation.csv`
-- `C:\CFS - Derek\Refrence Documents\QuickBase Formula Examples.csv`
+- `reference/QuickBase Formula Documentation.csv`
+- `reference/QuickBase Formula Examples.csv`
 
-The documentation CSV still looks useful as a seed list of functions and signatures, but it appears to predate several newer formula-query additions and newer text/query helpers.
+These files preserve older function documentation and examples. Current official documentation takes precedence when the sources differ.
 
 ## Stable syntax rules to support
 
@@ -70,6 +78,9 @@ The documentation CSV still looks useful as a seed list of functions and signatu
 - Single quotes around the field ID are optional in formula queries.
 - Comparison operators must be uppercase.
 - Multiple query blocks can be combined with `AND` or `OR`.
+- Parentheses group conditions, including nested groups.
+- Numeric matching values can omit quotes, as in `{72.LT.150}`.
+- Decimal matching values need quotes to preserve the fractional part. Quickbase truncates `{12.EX.5.6}` to `{12.EX.5}`. The extension reports warning `QB114` for unquoted decimals.
 - To inject a field value into a query string, concatenate with `&`, for example:
   - `"{'5'.EX.'" & [Manager name] & "'}"`
 - For user-field queries, prefer `TV` and wrap the field reference in `UserToID()` or `UserToEmail()`.
@@ -121,20 +132,34 @@ The documentation CSV still looks useful as a seed list of functions and signatu
 - Start queries with the most selective comparison when possible.
 - Prefer exact matches over broader operators like contains or wildcard matching when performance matters.
 
-## Gaps between the local CSV and current docs
+## October 2026 coverage update
 
-The local CSV is still a strong starting point, but the official docs confirm newer capabilities that should drive future validator coverage:
+The audit found five function names absent from the extension:
 
-- `GetRecordByUniqueField()` is officially documented in the Quickbase December 2022 release notes and formula-query docs, but it is not present in the local documentation CSV.
-- `RegexExtract()`, `RegexReplace()`, and `RegexMatch()` are officially documented in current help content and January 2025 release notes, but they are not present in the local documentation CSV.
-- `Join()` and `Median()` are called out in the April 2025 release notes and should be treated as current syntax.
-- Aggregate functions on formula-query results such as `Avg()`, `Min()`, `Max()`, and `Median()` are called out in the May 2025 release notes.
-- `SHA256()` and `ToUnixTime()` are evidenced in the Secure links help article and should be treated as live formula syntax.
-- `GetAccessKey()` appears in the snippet catalog, but I did not confirm a current official help-center page for it during this pass, so it should stay marked as "needs source confirmation."
+| Function | Result | Evidence |
+| --- | --- | --- |
+| `Distance()` | Number | Released July 9, 2026. Four Number coordinates and an optional Text unit (`"miles"` or `"km"`). |
+| `Find()` | Number | Text search function documented since April 2021. |
+| `RemoveNewlineCharacters()` | Text | Documented since May 2024. |
+| `URLDecode()` | Text | Documented since August 2024. |
+| `StDev()` | Number | Current reference documents a RecordList and field ID. Its introduction date remains unverified. |
 
-## Useful follow-up work
+The update adds these names to snippets, highlighting, hover documentation, and validation. It also adds or corrects these signatures and return rules:
 
-- Normalize the local CSV into structured JSON so validator signatures can be generated instead of hand-maintained.
-- Add a curated metadata layer for formula-query functions and query operators from the official docs.
-- Tighten variable-name validation to match the documented "letters only" rule.
-- Add diagnostics for unsupported use of formula-query return types in incompatible field contexts once field metadata is available.
+- `Average(RecordList, Number)` returns Number.
+- `Median()` accepts Number or Duration arguments, as well as a RecordList and field ID.
+- Query aggregates through `Min()` and `Max()` return Number rather than RecordList.
+- `ToDate()` accepts Number and `(Text, Text)` forms.
+- `ToUnixTime()` accepts Date as well as DateTime.
+- `ToFormattedText()` accepts `(Number, Text, Number)`.
+- `NameOfMonth()` accepts the documented optional Text argument.
+- `GetFieldProperty()` uses established literal property names to infer Boolean, Text, or Number. Unestablished or dynamic property names remain unknown.
+- `UserListToEmails()`, `UserListToIDs()`, and `UserListToNames()` return Text rather than TextList.
+
+The parser accepts unary plus, numeric query values without quotes, and nested query groups. Relative date range hovers cover documented day, week, month, quarter, fiscal quarter, year, and fiscal year forms. The secure-links article explicitly documents `GetAccessKey()` as the function that extracts an access key from a URL.
+
+## Verification limits
+
+Function-name coverage does not establish every runtime rule or every possible return type. The reference contains inconsistent examples and result labels, so signature changes need individual review.
+
+Field hints are local assertions. The extension cannot compare them with application metadata or execute formulas. It does not reproduce server-side save checks or API execution limits.
