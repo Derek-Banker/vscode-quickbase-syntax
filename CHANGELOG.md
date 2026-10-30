@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Expanded formula syntax coverage for modern variable types and common operators like `=`, `!=`, `<>`, and `&`
 - Updated README and extension metadata to reflect formula and query-string support
 
-## [Unreleased]
+## [1.0.0] - 2026-10-30
 - Added syntax, snippets, validation, and hover coverage for `Distance()`, `Find()`, `RemoveNewlineCharacters()`, `StDev()`, and `URLDecode()`
 - Added documented overloads for aggregates, date conversions, text formatting, and month names
 - Corrected aggregate, field-property, and user-list conversion return types
